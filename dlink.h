@@ -25,7 +25,7 @@ void * getContentOfLastNode();
 
 int insertNode(int index, void* pval);
 
-int insertNodeAtFirst(void* pval);
+//int insertNodeAtFirst(void* pval);
 
 int insertNodeAtLast(void* pval);
 

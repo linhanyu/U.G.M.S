@@ -21,18 +21,16 @@ void dLinkTest() {
 
     createDLink();
 
-    insertNode(0, &arr[0]);
-//    insertNodeAtLast(&arr[0]);
-//    insertNodeAtLast(&arr[1]);
-
+    insertNodeAtLast(&arr[0]);
+    insertNodeAtLast(&arr[1]);
 
     printf("\n%d, %d\n", dLinkIsEmpty(), dLinkSize());
 
     object *p;
     int size = dLinkSize();
-    for (int i = 0;  i < size ; ++i) {
-        p = (object *)getContentOfNode(i);
-        printf("get %d, %s\n", p -> id, p -> name);
+    for (int i = 0; i < size; ++i) {
+        p = (object *) getContentOfNode(i);
+        printf("get %d, %s\n", p->id, p->name);
     }
 
     destoryDLink();

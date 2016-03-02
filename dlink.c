@@ -58,7 +58,7 @@ static node* getNode(int index) {
     }
 
     // check one by one from closer side
-    if (index < count / 2) {
+    if (index <= count / 2) {
         int i = 0;
         node *tnode = head -> next;
         while (i++ < index) {
@@ -68,7 +68,7 @@ static node* getNode(int index) {
     }
     else {
         int i = 0;
-        int rIndex = count - index;
+        int rIndex = count - index - 1;
         node *tnode = head -> next;
         while (++i < rIndex) {
             tnode = tnode->next;
@@ -105,15 +105,15 @@ void *getContentOfLastNode() {
 }
 
 int insertNodeAtFirst(void* pval) {
-    node *nnode = createNode(pval);
-    if (!nnode) {
+    node *temp = createNode(pval);
+    if (!temp) {
         return -1;
     }
     
-    nnode -> prev = head;
-    nnode -> next = head -> next;
-    head -> next -> prev = nnode;
-    head -> next = nnode;
+    temp-> prev = head;
+    temp-> next = head -> next;
+    head -> next -> prev = temp;
+    head -> next = temp;
     count++;
     
     return 0;
