@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.3)
+set(PROJECT_VERSION 0.1)
 project(UGMS)
 
-#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
+#--- Compiler options
+if(CMAKE_COMPILER_IS_GNUCC)
+    add_definitions(-Wall -Werror -pedantic -std=c99)
+endif(CMAKE_COMPILER_IS_GNUCC)
 
 set(SOURCE_FILES main.c dlink.c dlink.h)
 add_executable(UGMS ${SOURCE_FILES})

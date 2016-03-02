@@ -104,6 +104,36 @@ void* getContentOfLastNode() {
     return getNodeContent(count - 1);
 }
 
+int insertNodeAtFirst(void* pval) {
+    node *nnode = createNode(pval);
+    if (!nnode) {
+        return -1;
+    }
+    
+    nnode -> prev = head;
+    nnode -> next = head -> next;
+    head -> next -> prev = nnode;
+    head -> next = nnode;
+    count++;
+    
+    return 0;
+}
+
+int insertNodeAtLast(void* pval) {
+    node *nnode = createNode(pval);
+    if (!nnode) {
+        return -1;
+    }
+    
+    nnode -> next = head;
+    nnode -> prev = head -> prev;
+    head -> prev -> next = nnode;
+    head -> prev = nnode;
+    ++count;
+    
+    return 0;
+}
+
 int insertNode(int index, void* pval) {
     if (index == 0) {
         return insertNodeAtFirst(pval);
@@ -113,5 +143,19 @@ int insertNode(int index, void* pval) {
         if (!tnode) {
             return -1;
         }
+        node *nnode = createNode(pval);
+        if (!nnode) {
+            return -1;
+        }
+        
+        nnode -> prev = tnode -> prev;
+        nnode -> next = tnode;
+        tnode -> prev -> next = nnode;
+        tnode -> prev = nnode;
+        
+        ++count;
+        
+        return 0;
     }
 }
+
