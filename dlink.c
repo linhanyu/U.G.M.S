@@ -1,20 +1,16 @@
 // DoubleLinkedList -- dlink.c
 // BigPa
 
-#include <stdio.h>
-#include <stdlib.h>
-//#ifdef __APPLE__
-//#else
-//#endif
 #include "dlink.h"
 
 // declare node with two pointers
 typedef struct tagOfNode {
     struct tagOfNode *prev;
     struct tagOfNode *next;
-    void *p;
+    void *content;
 } node;
 
+// head node
 static node *head = NULL;
 
 // number of nodes
@@ -22,16 +18,18 @@ static int count = 0;
 
 static node* createNode(void *pval) {
     // create temp node
-    node *tnode = NULL;
-    tnode = (node *)malloc(sizeof(node));
-    if (!tnode) {
+    node *temp = NULL;
+    temp = (node *)malloc(sizeof(node));
+    if (!temp) {
         printf("Node creation error\n");
         return NULL;
     }
-    // point to itself
-    tnode -> prev = tnode -> next = tnode;
-    tnode -> p = pval;
-    return tnode;
+    else {
+        // point to itself
+        temp->prev = temp->next = temp;
+        temp->content = pval;
+        return temp;
+    }
 }
 
 int createDLink() {
@@ -87,21 +85,23 @@ static node* getLastNode() {
     return getNode(count - 1);
 }
 
-void* getNodeContent(int index) {
+void* getContentOfNode(int index) {
     node *tnode = getNode(index);
     if (!tnode) {
         printf("Get Node content failed\n");
         return NULL;
     }
-    return tnode -> p;
+    return tnode ->content;
 }
 
-void* getContentOfFirstNode() {
-    return getNodeContent(0);
+
+void *getContentOfFirstNode() {
+    return getContentOfNode(0);
 }
 
-void* getContentOfLastNode() {
-    return getNodeContent(count - 1);
+
+void *getContentOfLastNode() {
+    return getContentOfNode(count - 1);
 }
 
 int insertNodeAtFirst(void* pval) {
@@ -134,6 +134,56 @@ int insertNodeAtLast(void* pval) {
     return 0;
 }
 
+int deleteNode(int index) {
+    node *tnode = getNode(index);
+    if (!tnode) {
+        printf("Get node failed, index is out of range.\n");
+        return -1;
+    }
+
+    tnode -> next -> prev = tnode -> prev;
+    tnode -> prev -> next = tnode -> next;
+    free(tnode);
+    --count;
+
+    return 0;
+}
+
+
+int deleteNodeAtFirst() {
+    return deleteNode(0);
+}
+
+
+int deleteNodeAtLast() {
+    return deleteNode(count - 1);
+}
+
+
+int destoryDLink() {
+    if (!head) {
+        printf("dLink dows not exist.\n");
+        return -1;
+    }
+    node *tnode = head -> next;
+    // node being destoryed
+    node *dnode = NULL;
+
+    while (tnode != head) {
+        dnode = tnode;
+        tnode = tnode -> next;
+        free(dnode);
+    }
+
+    free(head);
+    head = NULL;
+    count = 0;
+
+    return 0;
+
+}
+
+
 int insertNode(int index, void* pval) {
     if (index == 0) {
         return insertNodeAtFirst(pval);
@@ -147,14 +197,14 @@ int insertNode(int index, void* pval) {
         if (!nnode) {
             return -1;
         }
-        
+
         nnode -> prev = tnode -> prev;
         nnode -> next = tnode;
         tnode -> prev -> next = nnode;
         tnode -> prev = nnode;
-        
+
         ++count;
-        
+
         return 0;
     }
 }
