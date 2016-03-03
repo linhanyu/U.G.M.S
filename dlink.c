@@ -5,23 +5,23 @@
 
 // declare node with two pointers
 typedef struct tagOfNode {
-    struct tagOfNode *prev;
-    struct tagOfNode *next;
-    void *content;
+    struct tagOfNode* prev;
+    struct tagOfNode* next;
+    void* content;
 } node;
 
 // head node
-static node *head = NULL;
+static node* head = NULL;
 
 // number of nodes
 static int count = 0;
 
-static node* createNode(void *pval) {
+static node* createNode(void* pval) {
     // create temp node
-    node *temp = NULL;
-    temp = (node *)malloc(sizeof(node));
+    node* temp = NULL;
+    temp = (node*) malloc(sizeof(node));
     if (!temp) {
-        printf("Node creation error\n");
+//        printf("Node creation error\n");
         return NULL;
     }
     else {
@@ -37,7 +37,10 @@ int createDLink() {
     if (!head) {
         return -1;
     }
-    count = 0;
+    else {
+        count = 0;
+        head->content = head;
+    }
     return 0;
 }
 
@@ -45,134 +48,132 @@ int dLinkIsEmpty() {
     return count == 0;
 }
 
-
 int dLinkSize() {
     return count;
 }
 
-
 static node* getNode(int index) {
-    if (index < 0 || index >= count) {
-        printf("index is out of range\n");
+    if (index < 0 || index > count) {
+//        printf("index is out of range\n");
         return NULL;
     }
 
     // check one by one from closer side
     if (index <= count / 2) {
         int i = 0;
-        node *tnode = head -> next;
+        node* temp = head; //->next;
         while (i++ < index) {
-            tnode = tnode -> next;
+            temp = temp->next;
         }
-        return tnode;
+        return temp;
     }
     else {
-        int i = 0;
-        int rIndex = count - index - 1;
-        node *tnode = head -> next;
-        while (++i < rIndex) {
-            tnode = tnode->next;
+        // i is the steps to move
+        int i = count - index + 1;
+        node* temp = head; //->next;
+        while (i-- != 0) {
+            temp = temp->prev;
         }
-        return tnode;
+        return temp;
     }
 }
 
 static node* getFirstNode() {
-    return getNode(0);
+    return getNode(1);
 }
 
 static node* getLastNode() {
-    return getNode(count - 1);
+    return getNode(count);
 }
 
 void* getContentOfNode(int index) {
-    node *tnode = getNode(index);
-    if (!tnode) {
-        printf("Get Node content failed\n");
+    node* temp = getNode(index);
+    if (!temp) {
+//        printf("Get Node content failed.\n");
         return NULL;
     }
-    return tnode ->content;
+    if (temp->content == NULL) {
+//        printf("The Node has no content.\n");
+    }
+    return temp->content;
 }
 
 
-void *getContentOfFirstNode() {
-    return getContentOfNode(0);
+void* getContentOfFirstNode() {
+    return getContentOfNode(1);
 }
 
 
-void *getContentOfLastNode() {
-    return getContentOfNode(count - 1);
+void* getContentOfLastNode() {
+    return getContentOfNode(count);
 }
 
-int insertNodeAtFirst(void* pval) {
-    node *temp = createNode(pval);
+int insertNodeAtFirst(void* content) {
+    node* temp = createNode(content);
     if (!temp) {
         return -1;
     }
-    
-    temp-> prev = head;
-    temp-> next = head -> next;
-    head -> next -> prev = temp;
-    head -> next = temp;
-    count++;
-    
+
+    temp->prev = head;
+    temp->next = head->next;
+    head->next->prev = temp;
+    head->next = temp;
+    ++count;
+
     return 0;
 }
 
-int insertNodeAtLast(void* pval) {
-    node *nnode = createNode(pval);
-    if (!nnode) {
+int insertNodeAtLast(void* content) {
+    node* temp = createNode(content);
+    if (!temp) {
         return -1;
     }
-    
-    nnode -> next = head;
-    nnode -> prev = head -> prev;
-    head -> prev -> next = nnode;
-    head -> prev = nnode;
+
+    temp->next = head;
+    temp->prev = head->prev;
+    head->prev->next = temp;
+    head->prev = temp;
     ++count;
-    
+
     return 0;
 }
 
 int deleteNode(int index) {
-    node *tnode = getNode(index);
-    if (!tnode) {
-        printf("Get node failed, index is out of range.\n");
+    node* temp = getNode(index);
+    if (!temp) {
+//        printf("Get node failed, index is out of range.\n");
         return -1;
     }
 
-    tnode -> next -> prev = tnode -> prev;
-    tnode -> prev -> next = tnode -> next;
-    free(tnode);
+    temp->next->prev = temp->prev;
+    temp->prev->next = temp->next;
+    free(temp);
     --count;
 
     return 0;
 }
 
-
 int deleteNodeAtFirst() {
-    return deleteNode(0);
+    return deleteNode(1);
 }
-
 
 int deleteNodeAtLast() {
-    return deleteNode(count - 1);
+    return deleteNode(count);
 }
-
 
 int destoryDLink() {
     if (!head) {
-        printf("dLink dows not exist.\n");
+//        printf("dLink does not exist.\n");
         return -1;
     }
-    node *tnode = head -> next;
+    node* temp = head->next;
     // node being destoryed
-    node *dnode = NULL;
+    node* dest = NULL;
 
-    while (tnode != head) {
-        dnode = tnode;
-        tnode = tnode -> next;
-        free(dnode);
+    while (temp != head) {
+        dest = temp;
+        temp = temp->next;
+        free(dest);
     }
 
     free(head);
@@ -183,25 +184,26 @@ int destoryDLink() {
 
 }
 
-
-int insertNode(int index, void* pval) {
+int insertNode(int index, void* content) {
     if (index == 0) {
-        return insertNodeAtFirst(pval);
+//        printf("Inserted After Header");
+        return insertNodeAtFirst(content);
     }
     else {
-        node *tnode = getNode(index);
-        if (!tnode) {
+        node* temp = getNode(index);
+        if (!temp) {
+//            printf("get node failed.\n");
             return -1;
         }
-        node *nnode = createNode(pval);
+        node* nnode = createNode(content);
         if (!nnode) {
             return -1;
         }
 
-        nnode -> prev = tnode -> prev;
-        nnode -> next = tnode;
-        tnode -> prev -> next = nnode;
-        tnode -> prev = nnode;
+        nnode->prev = temp->prev;
+        nnode->next = temp;
+        temp->prev->next = nnode;
+        temp->prev = nnode;
 
         ++count;
 

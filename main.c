@@ -2,10 +2,10 @@
 
 #include <stdio.h>
 #include "dlink.h"
-#include "test.h"
+//#include "test.h"
 
 int main() {
+//    dLinkTest();
     printf("Hello, World!\n");
-    dLinkTest();
     return 0;
 }
