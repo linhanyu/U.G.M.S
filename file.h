@@ -5,8 +5,14 @@
 
 #endif //UGMS_FILE_H
 
+#include <stdio.h>
+#include "dlink.h"
+#include "structs.h"
+
 int savePlayer(void* linkedList);
 
 int saveItem(void* linkedList);
 
-void* read();
+int loadPlayer(void* linkedList);
+
+int loadItem(void* linkedList);

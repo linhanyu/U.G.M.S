@@ -212,4 +212,3 @@ int insertNode(int index, void* content) {
         return 0;
     }
 }
-

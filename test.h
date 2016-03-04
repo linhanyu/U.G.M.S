@@ -5,3 +5,5 @@
 
 // dlink finished
 extern void dLinkTest();
+
+extern void fileTest();

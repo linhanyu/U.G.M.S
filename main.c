@@ -1,12 +1,10 @@
 // UGMS
 
-#include <stdio.h>
 #include "dlink.h"
-//#include "test.h"
-#include "structs.h"
+#include "test.h"
 
 int main() {
-//    dLinkTest();
-    printf("Hello, World!\n");
+    dLinkTest();
+//    fileTest();
     return 0;
 }

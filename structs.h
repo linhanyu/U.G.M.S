@@ -5,14 +5,15 @@
 
 #endif //UGMS_STRUCTS_H
 
+// 一个中文字符两个char字符
 typedef struct tagOfItem {
     char iName[20];
     int id;
-    int sTime[8];
-    int eTime[8];
+    char sTime[9];
+    char eTime[9];
     char place[10];
     int number;
-    char gender;
+    char gender[3];
 } Item;
 
 typedef struct tagOfPlayer {
