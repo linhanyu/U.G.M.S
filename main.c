@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "dlink.h"
 //#include "test.h"
+#include "structs.h"
 
 int main() {
 //    dLinkTest();

@@ -13,6 +13,8 @@ typedef struct tagOfNode {
 // head node
 static node* head = NULL;
 
+
+
 // number of nodes
 static int count = 0;
 
