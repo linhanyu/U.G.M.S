@@ -3,22 +3,7 @@
 
 #include "dlink.h"
 
-// declare node with two pointers
-typedef struct tagOfNode {
-    struct tagOfNode* prev;
-    struct tagOfNode* next;
-    void* content;
-} node;
-
-// head node
-static node* head = NULL;
-
-
-
-// number of nodes
-static int count = 0;
-
-static node* createNode(void* pval) {
+node* createNode(void* content) {
     // create temp node
     node* temp = NULL;
     temp = (node*) malloc(sizeof(node));
@@ -29,41 +14,45 @@ static node* createNode(void* pval) {
     else {
         // point to itself
         temp->prev = temp->next = temp;
-        temp->content = pval;
+        temp->content = content;
         return temp;
     }
 }
 
-int createDLink() {
-    head = createNode(NULL);
-    if (!head) {
-        return -1;
+void* createDLink(char* name) {
+    Dlink* temp = NULL;
+    temp = (Dlink*) malloc(sizeof(Dlink));
+    if (!temp) {
+        return NULL;
     }
-    else {
-        count = 0;
-        head->content = head;
-    }
-    return 0;
+    temp->list = createNode(NULL);
+    temp->count = 0;
+    temp->name = name;
+
+    return temp;
 }
 
-int dLinkIsEmpty() {
-    return count == 0;
+int dLinkIsEmpty(Dlink* name) {
+    return name->count == 0;
 }
 
-int dLinkSize() {
+int dLinkSize(Dlink* pointer) {
+    int count = pointer->count;
     return count;
 }
 
-static node* getNode(int index) {
-    if (index < 0 || index > count) {
+static node* getNode(Dlink* name, int index) {
+    if (index < 0 || index > name->count) {
 //        printf("index is out of range\n");
         return NULL;
     }
 
+    int count = name->count;
+
     // check one by one from closer side
     if (index <= count / 2) {
         int i = 0;
-        node* temp = head; //->next;
+        node* temp = name->list; //->next;
         while (i++ < index) {
             temp = temp->next;
         }
@@ -72,7 +61,7 @@ static node* getNode(int index) {
     else {
         // i is the steps to move
         int i = count - index + 1;
-        node* temp = head; //->next;
+        node* temp = name->list; //->next;
         while (i-- != 0) {
             temp = temp->prev;
         }
@@ -80,16 +69,16 @@ static node* getNode(int index) {
     }
 }
 
-static node* getFirstNode() {
-    return getNode(1);
+static node* getFirstNode(Dlink* name) {
+    return getNode(name, 1);
 }
 
-static node* getLastNode() {
-    return getNode(count);
+static node* getLastNode(Dlink* name) {
+    return getNode(name, name->count);
 }
 
-void* getContentOfNode(int index) {
-    node* temp = getNode(index);
+void* getContentOfNode(Dlink* name, int index) {
+    node* temp = getNode(NULL, index);
     if (!temp) {
 //        printf("Get Node content failed.\n");
         return NULL;
@@ -101,47 +90,51 @@ void* getContentOfNode(int index) {
 }
 
 
-void* getContentOfFirstNode() {
-    return getContentOfNode(1);
+void* getContentOfFirstNode(Dlink* name) {
+    return getContentOfNode(name, 1);
 }
 
 
-void* getContentOfLastNode() {
-    return getContentOfNode(count);
+void* getContentOfLastNode(Dlink* name) {
+    return getContentOfNode(name, name->count);
 }
 
-int insertNodeAtFirst(void* content) {
+int insertNodeAtFirst(Dlink* name, void* content) {
     node* temp = createNode(content);
     if (!temp) {
         return -1;
     }
 
-    temp->prev = head;
-    temp->next = head->next;
-    head->next->prev = temp;
-    head->next = temp;
+    int count = name->count;
+    temp->prev = name->list->prev;
+    temp->next = name->list->next;
+    name->list->next->prev = temp;
+    name->list->next = temp;
     ++count;
+    name->count = count;
 
     return 0;
 }
 
-int insertNodeAtLast(void* content) {
+int insertNodeAtLast(Dlink* name, void* content) {
     node* temp = createNode(content);
     if (!temp) {
         return -1;
     }
 
-    temp->next = head;
-    temp->prev = head->prev;
-    head->prev->next = temp;
-    head->prev = temp;
+    int count = name->count;
+    temp->next = name->list;
+    temp->prev = name->list->prev;
+    name->list->prev->next = temp;
+    name->list->prev = temp;
     ++count;
+    name->count = count;
 
     return 0;
 }
 
-int deleteNode(int index) {
-    node* temp = getNode(index);
+int deleteNode(Dlink* name, int index) {
+    node* temp = getNode(name, index);
     if (!temp) {
 //        printf("Get node failed, index is out of range.\n");
         return -1;
@@ -150,49 +143,49 @@ int deleteNode(int index) {
     temp->next->prev = temp->prev;
     temp->prev->next = temp->next;
     free(temp);
-    --count;
+    --(name->count);
 
     return 0;
 }
 
-int deleteNodeAtFirst() {
-    return deleteNode(1);
+int deleteNodeAtFirst(Dlink* name) {
+    return deleteNode(name, 1);
 }
 
-int deleteNodeAtLast() {
-    return deleteNode(count);
+int deleteNodeAtLast(Dlink* name) {
+    return deleteNode(NULL, name->count);
 }
 
-int destoryDLink() {
-    if (!head) {
+int destoryDLink(Dlink* name) {
+    if (!name->list) {
 //        printf("dLink does not exist.\n");
         return -1;
     }
-    node* temp = head->next;
+    node* temp = name->list->next;
     // node being destoryed
     node* dest = NULL;
 
-    while (temp != head) {
+    while (temp != name->list) {
         dest = temp;
         temp = temp->next;
         free(dest);
     }
 
-    free(head);
-    head = NULL;
-    count = 0;
+    free(name->list);
+    name->list = NULL;
+    name->count = 0;
 
     return 0;
 
 }
 
-int insertNode(int index, void* content) {
+int insertNode(Dlink* name, int index, void* content) {
     if (index == 0) {
 //        printf("Inserted After Header");
-        return insertNodeAtFirst(content);
+        return insertNodeAtFirst(NULL, content);
     }
     else {
-        node* temp = getNode(index);
+        node* temp = getNode(NULL, index);
         if (!temp) {
 //            printf("get node failed.\n");
             return -1;
@@ -207,7 +200,7 @@ int insertNode(int index, void* content) {
         temp->prev->next = nnode;
         temp->prev = nnode;
 
-        ++count;
+        ++(name->count);
 
         return 0;
     }

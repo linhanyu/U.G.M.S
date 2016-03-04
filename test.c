@@ -1,7 +1,5 @@
-#include <string.h>
 #include "test.h"
-#include "dlink.h"
-#include "structs.h"
+
 
 void dLinkTest() {
 
@@ -21,26 +19,26 @@ void dLinkTest() {
 //        printf("%d\n", &arr[i]);
 //    }
 
-    createDLink();
+    Dlink* a = createDLink("xx");
 
-    insertNodeAtLast(&arr[0]);
-    insertNodeAtLast(&arr[1]);
-    insertNodeAtLast(&arr[2]);
-    insertNode(2, &arr[3]);
-    insertNodeAtFirst(&arr[3]);
-    deleteNode(2);
+    insertNodeAtLast(a, &arr[0]);
+    insertNodeAtLast(a, &arr[1]);
+    insertNodeAtLast(a, &arr[2]);
+    insertNode(a, 2, &arr[3]);
+    insertNodeAtFirst(a, &arr[3]);
+    deleteNode(a, 2);
 
 
-    printf("\n%d, %d\n", dLinkIsEmpty(), dLinkSize());
+    printf("\n%d, %d\n", dLinkIsEmpty(a), dLinkSize(a));
 
     object* p;
-    int size = dLinkSize();
+    int size = dLinkSize(a);
     for (int i = 1; i <= size; ++i) {
-        p = (object*) getContentOfNode(i);
+        p = (object*) getContentOfNode(a, i);
         printf("get %d, %s\n", p->id, p->name);
     }
 
-    destoryDLink();
+    destoryDLink(a);
 
     printf("\n%s Finished!\n", __func__);
 
@@ -53,24 +51,24 @@ void fileTest() {
             {"女子800米",  2, "03280900", "03281000", "田径场", 16, "女"},
     };
 
-    Item temp;
-    temp = arr[2];
-    FILE *fp;
-    Item *p = &temp;
-    char *path = getenv("HOME");
-    const char *path2 = "/ClionProjects/UGMS/Items.ugms";
-    path = strcat(path, path2);
-    printf("%s", path);
-    fp = fopen(path, "w");
-    if (fp == NULL) {
-        printf("file creation failed\n");
-    }
-    fwrite(p, sizeof(Item), 1, fp);
-    fclose(fp);
-    fp = fopen(path, "r");
-    fread(p, sizeof(Item), 1, fp);
-    output(temp);
-    fclose(fp);
+//    Item temp;
+//    temp = arr[2];
+//    FILE *fp;
+//    Item *p = &temp;
+//    char *path = getenv("HOME");
+//    const char *path2 = "/ClionProjects/UGMS/Items.ugms";
+//    path = strcat(path, path2);
+//    printf("%s", path);
+//    fp = fopen(path, "w");
+//    if (fp == NULL) {
+//        printf("file creation failed\n");
+//    }
+//    fwrite(p, sizeof(Item), 1, fp);
+//    fclose(fp);
+//    fp = fopen(path, "r");
+//    fread(p, sizeof(Item), 1, fp);
+//    output(temp);
+//    fclose(fp);
 }
 
 int output(Item temp) {

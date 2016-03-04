@@ -6,35 +6,46 @@
 
 #endif //UGMS_DLINK_H
 
-#include <stdio.h>
 #include <stdlib.h>
 
-// create DoubleLinkedList
-extern int createDLink();
+// DO NOT TOUCH THIS
+typedef struct tagOfNode {
+    struct tagOfNode* prev;
+    struct tagOfNode* next;
+    void* content;
+} node;
+
+typedef struct tagOfDLink {
+    char* name;
+    int count;
+    node* list;
+} Dlink;
+
+// create DoubleLinkedList with a name
+void* createDLink(char* name);
 
 // destory DoubleLinkedList
-extern int destoryDLink();
+int destoryDLink(Dlink* name);
 
 // return 1 if DoubleLinkedList is empty INCLUDING header node
-extern int dLinkIsEmpty();
+extern int dLinkIsEmpty(Dlink* name);
 
-extern int dLinkSize();
+extern int dLinkSize(Dlink* pointer);
 
-extern void* getContentOfNode(int index);
+extern void* getContentOfNode(Dlink* name, int index);
 
-void* getContentOfFirstNode();
+void* getContentOfFirstNode(Dlink* name);
 
-void* getContentOfLastNode();
+void* getContentOfLastNode(Dlink* name);
 
-int insertNode(int index, void* content);
+int insertNode(Dlink* name, int index, void* content);
 
-int insertNodeAtFirst(void* content);
+int insertNodeAtFirst(Dlink* name, void* content);
 
-int insertNodeAtLast(void* content);
+int insertNodeAtLast(Dlink* name, void* content);
 
-int deleteNode(int index);
+int deleteNode(Dlink* name, int index);
 
-int deleteNodeAtFirst();
+int deleteNodeAtFirst(Dlink* name);
 
-int deleteNodeAtLast();
-
+int deleteNodeAtLast(Dlink* name);

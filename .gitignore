@@ -1,5 +1,6 @@
 # Clion files
 .idea/*
+build/*
 
 # Object files
 *.o

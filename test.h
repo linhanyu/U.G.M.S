@@ -3,6 +3,11 @@
 
 #endif //UGMS_TEST_H
 
+#include <stdio.h>
+#include "dlink.h"
+#include "structs.h"
+#include "file.h"
+
 // dlink finished
 extern void dLinkTest();
 
