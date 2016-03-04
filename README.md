@@ -49,5 +49,11 @@ An Assignment of Data Structure
     * 人数
     * 性别
 
+# Progress
+- [ ] 界面
+- [ ] 保存到文件/从文件读取
+- [ ] 查询
+- [ ] 录入/发布
+
 # License
 [GPLv3](https://github.com/BigPa/U.G.M.S/blob/master/LICENSE)
